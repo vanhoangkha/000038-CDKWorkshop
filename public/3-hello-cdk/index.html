@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.69.0" />
+    <meta name="description" content="">
+<meta name="author" content="journeyoftheaverageguy@gmail.com">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Ứng dụng CDK đầu tiên - Hello Lambda! :: AWS CDK Workshop</title>
+
+    
+    <link href="/css/nucleus.css?1614014318" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1614014318" rel="stylesheet">
+    <link href="/css/hybrid.css?1614014318" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1614014318" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1614014318" rel="stylesheet">
+    <link href="/css/auto-complete.css?1614014318" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1614014318" rel="stylesheet">
+    <link href="/css/theme.css?1614014318" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1614014318" rel="stylesheet">
+    
+    <link href="/css/theme-workshop.css?1614014318" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1614014318"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/3-hello-cdk/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1614014318"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1614014318"></script>
+<script type="text/javascript">
+    
+        var baseurl = "";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1614014318"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-preparation/" title="Chuẩn bị" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-preparation/">
+          <b>1. </b>Chuẩn bị
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-new-project/" title="Khởi tạo một CDK project" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-new-project/">
+          <b>2. </b>Khởi tạo một CDK project
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-hello-cdk/" title="Ứng dụng CDK đầu tiên - Hello Lambda!" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="/3-hello-cdk/">
+          <b>3. </b>Ứng dụng CDK đầu tiên - Hello Lambda!
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-writing-constructs/" title="Cách Xây dựng một Construct" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/4-writing-constructs/">
+          <b>4. </b>Cách Xây dựng một Construct
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-using-construct-libraries/" title="Sử dụng thư viện Construct" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/5-using-construct-libraries/">
+          <b>5. </b>Sử dụng thư viện Construct
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="http://awsstudygroup.com"><i class='fab fa-aws'></i> AWS Study Group - Blog</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://www.facebook.com/groups/660548818043427/"><i class='fab fa-facebook'></i> AWS Study Group - FB Group</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="/3-hello-cdk/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+    
+
+    
+
+    
+</left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/'>AWS CDK Intro Workshop</a> > Ứng dụng CDK đầu tiên - Hello Lambda!
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-clean-up">1. Clean up</a></li>
+        <li><a href="#2-hello-lambda">2. Hello Lambda</a></li>
+        <li><a href="#api-gateway">API Gateway</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Ứng dụng CDK đầu tiên - Hello Lambda!
+            </h1>
+          
+
+        
+
+
+
+	<hr>
+<p>Trong chương này, chúng ta sẽ thực sự đi sâu hơn về nội dung code mô tả một ứng dụng CDK. Thay cho những đoạn code SNS/SQS chúng ta sẽ sử dụng Lambda function cùng với API Gateway endpoint dặt ở phía trước để tạo nên ứng dụng CDK đầu tiên. 
+Người dùng khi truy cập vào API Gateway endpoint thông qua một URL, sẽ nhận được một lời chào đầy nồng ấm gửi từ Lambda function của chúng ta. 
+<img src="../../../images/1/7.png?width=70pc" alt="Security Hub"> 
+Đầu tiên, hãy cùng dọn dẹp những đoạn code SNS/SQS không còn liên quan tới ứng dụng đầu tiên của chúng ta.</p>
+<h3 id="1-clean-up">1. Clean up</h3>
+<p>The project ban đầu được tạo bởi cdk init sample-app bao gồm một SQS queue và chính sách liên quan tới queue, một SNS topic và subscription của nó. 
+Chúng ta sẽ không sử dụng lại chúng trong các phần tiếp theo của workshop này, vì vậy chúng ta sẽ xóa chúng khởi CdkworkshopStack constructor.
+Sử dụng VSCode IDE, mở file cdkworkshop/cdkworkshop_stack.py và xóa toàn bộ nội dung không liên quan. Cuối cùng ta thu được nội dung như sau:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> aws_cdk <span style="color:#f92672">import</span> (
+    core,
+)
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CdkworkshopStack</span>(core<span style="color:#f92672">.</span>Stack):
+
+    <span style="color:#66d9ef">def</span> __init__(self, scope: core<span style="color:#f92672">.</span>Construct, id: str, <span style="color:#f92672">**</span>kwargs) <span style="color:#f92672">-&gt;</span> None:
+        super()<span style="color:#f92672">.</span>__init__(scope, id, <span style="color:#f92672">**</span>kwargs)
+
+        <span style="color:#75715e"># Nothing here!</span>
+</code></pre></div><p>Sau khi đã chỉnh sửa nội dung của Stack, ta có thể kiểm tra lại sự khác biệt giữa ứng dụng CDK mẫu mà ta deploy ban đầu với nội dung của ứng dụng hiện tại bằng cdk toolkit, cụ thể là lệnh cdk diff. 
+Đây là một cách an toàn để kiểm tra điều gì sẽ xảy ra trước khi ta chạy lệnh cdk deploy và đây là một thói quen tốt nên được duy trì.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cdk diff
+
+Stack cdkworkshop
+IAM Statement Changes
+<span style="color:#960050;background-color:#1e0010">┌───┬─────────────────────────────────┬────────┬─────────────────┬───────────────────────────┬─────────────────────────────────────────────────────────────────┐</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> Resource                        <span style="color:#960050;background-color:#1e0010">│</span> Effect <span style="color:#960050;background-color:#1e0010">│</span> Action          <span style="color:#960050;background-color:#1e0010">│</span> Principal                 <span style="color:#960050;background-color:#1e0010">│</span> Condition                                                       <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">├───┼─────────────────────────────────┼────────┼─────────────────┼───────────────────────────┼─────────────────────────────────────────────────────────────────┤</span>
+<span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">-</span> <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#960050;background-color:#1e0010">$</span>{CdkworkshopQueue18864164<span style="color:#f92672">.</span>Arn} <span style="color:#960050;background-color:#1e0010">│</span> Allow  <span style="color:#960050;background-color:#1e0010">│</span> sqs:SendMessage <span style="color:#960050;background-color:#1e0010">│</span> Service:sns<span style="color:#f92672">.</span>amazonaws<span style="color:#f92672">.</span>com <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#e6db74">&#34;ArnEquals&#34;</span>: {                                                  <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                                 <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                 <span style="color:#960050;background-color:#1e0010">│</span>                           <span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#34;aws:SourceArn&#34;</span>: <span style="color:#e6db74">&#34;${CdkworkshopTopic58CFDD3D}&#34;</span>                <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                                 <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                 <span style="color:#960050;background-color:#1e0010">│</span>                           <span style="color:#960050;background-color:#1e0010">│</span> }                                                               <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">└───┴─────────────────────────────────┴────────┴─────────────────┴───────────────────────────┴─────────────────────────────────────────────────────────────────┘</span>
+(NOTE: There may be security<span style="color:#f92672">-</span>related changes <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> this list<span style="color:#f92672">.</span> See https:<span style="color:#f92672">//</span>github<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span>aws<span style="color:#f92672">/</span>aws<span style="color:#f92672">-</span>cdk<span style="color:#f92672">/</span>issues<span style="color:#f92672">/</span><span style="color:#ae81ff">1299</span>)
+
+Resources
+[<span style="color:#f92672">-</span>] AWS::SQS::Queue CdkworkshopQueue18864164 destroy
+[<span style="color:#f92672">-</span>] AWS::SQS::QueuePolicy CdkworkshopQueuePolicy78D5BF45 destroy
+[<span style="color:#f92672">-</span>] AWS::SNS::Subscription CdkworkshopQueuecdkworkshopCdkworkshopTopic7642CC2FCF70B637 destroy
+[<span style="color:#f92672">-</span>] AWS::SNS::Topic CdkworkshopTopic58CFDD3D destroy
+</code></pre></div><p>Và đúng như kì vọng, toàn bộ resource không còn liên quan đều sẽ bị destroy khỏi nội dung của Stack. 
+Thực hiện chạy cdk deploy dể áp dụng sự thay đổi trên.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cdk deploy
+</code></pre></div><h3 id="2-hello-lambda">2. Hello Lambda</h3>
+<h4 id="lambda-handler-code">Lambda handler code</h4>
+<p>Chúng ta sẽ bắt đầu với AWS Lambda handler.</p>
+<ul>
+<li>Thực hiện tạo một thư mục đặt tên là lambda nằm trong thư mục root của cây thư mục ứng dụng của bạn.</li>
+<li>Bổ sung một file đặt tên là lambda/hello.py với nội dung nhu sau:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> json
+
+<span style="color:#75715e"># Hàm bắt sự kiện </span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handler</span>(event, context):
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;request: {}&#39;</span><span style="color:#f92672">.</span>format(json<span style="color:#f92672">.</span>dumps(event)))
+    <span style="color:#66d9ef">return</span> {
+        <span style="color:#e6db74">&#39;statusCode&#39;</span>: <span style="color:#ae81ff">200</span>,
+        <span style="color:#e6db74">&#39;headers&#39;</span>: {
+            <span style="color:#e6db74">&#39;Content-Type&#39;</span>: <span style="color:#e6db74">&#39;text/plain&#39;</span>
+        },
+        <span style="color:#e6db74">&#39;body&#39;</span>: <span style="color:#e6db74">&#39;Hello, CDK! You have hit {}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(event[<span style="color:#e6db74">&#39;path&#39;</span>])
+    }
+
+</code></pre></div><p>Trên đây chỉ là một Lambda function tương đối đơn giản, nó sẽ trả về nội dung text “Hello, CDK! You’ve hit [url path]&rdquo; khi người dùng truy cập link endpoint. 
+Ngoài ra kết quả trả về cũng bao gồm HTTP status code và thông tin HTTP headers dược tính toán bởi API Gateway.</p>
+<h4 id="cài-đặt-aws-lambda-construct">Cài đặt AWS Lambda construct</h4>
+<p>AWS CDK được cài đặt cùng với bộ thư viện cấu trúc mở rộng AWS Construct Library. Bộ thư viện này được chia thành nhiều module con, và một trong số đó dành cho các dịch vụ của AWS. 
+Ví dụ nếu bạn muốn định nghĩa một AWS Lambda function, bạn sẽ cần import thư viện cấu trúc liên quan tới AWS Lambda.
+Để có thể tìm hiểu sâu hơn về AWS Construct, bạn có thể truy cập <a href="https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html">AWS Construct Library</a>
+<img src="../../../images/1/8.png?width=60pc" alt="Security Hub"></p>
+<p>Okay, giờ chúng ta hãy cùng sử dụng lệnh pip install để bắt đầu cài đặt AWS Lambda module và tất cả các gói phụ thuộc khác vào project:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pip install aws<span style="color:#f92672">-</span>cdk<span style="color:#f92672">.</span>aws<span style="color:#f92672">-</span><span style="color:#66d9ef">lambda</span>
+</code></pre></div><h4 id="thêm-aws-lambda-function-vào-stack">Thêm AWS Lambda Function vào Stack</h4>
+<p>Sau khi bộ thư viện đã được cài đặt, quay trở lại file stack cdkworkshop/cdkworkshop_stack.py, thực hiện import thư viện AWS Lambda vừa mới cài đặt, đồng thởi bổ sung thêm đoạn code khởi tạo một thực thể của lambda.Function. 
+Nội dung cdkworkshop/cdkworkshop_stack.py lúc này trở thành như sau:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Thực hiện import thư viện cdk core và aws_lambda</span>
+<span style="color:#f92672">from</span> aws_cdk <span style="color:#f92672">import</span> (
+    core,
+    aws_lambda <span style="color:#66d9ef">as</span> _lambda,
+)
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CdkworkshopStack</span>(core<span style="color:#f92672">.</span>Stack):
+
+    <span style="color:#66d9ef">def</span> __init__(self, scope: core<span style="color:#f92672">.</span>Construct, id: str, <span style="color:#f92672">**</span>kwargs) <span style="color:#f92672">-&gt;</span> None:
+        super()<span style="color:#f92672">.</span>__init__(scope, id, <span style="color:#f92672">**</span>kwargs)
+
+        <span style="color:#75715e"># Defines an AWS Lambda resource</span>
+        my_lambda <span style="color:#f92672">=</span> _lambda<span style="color:#f92672">.</span>Function(
+            self, <span style="color:#e6db74">&#39;HelloHandler&#39;</span>,
+            runtime<span style="color:#f92672">=</span>_lambda<span style="color:#f92672">.</span>Runtime<span style="color:#f92672">.</span>PYTHON_3_7,
+            code<span style="color:#f92672">=</span>_lambda<span style="color:#f92672">.</span>Code<span style="color:#f92672">.</span>asset(<span style="color:#e6db74">&#39;lambda&#39;</span>),
+            handler<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;hello.handler&#39;</span>,
+        )
+</code></pre></div><p>Phân tích:</p>
+<ul>
+<li>Chúng ta đã import module aws_lambda và gán một tên rút gọn cho nó _lambda</li>
+<li>Function của chúng ta sử dụng bộ python runtime version  3.7</li>
+<li>Đoạn mã bắt sự kiện Handler được nạp từ thư mục lambda mà chúng ta đã tạo từ trước. Đường dẫn này là tương đối đối với vị trí mà ứng dụng cdk của chúng ta được thực thi (file app.py nằm tại thư mục root)</li>
+<li>Tên của Handler function là hello.handler, trong đó hello là tên của file hello.py và handler là tên của function nằm trong file hello.py</li>
+</ul>
+<p>Như bạn có thể thấy Cấu trúc class của cả CdkworkshopStack và lambda.Function (và rất nhiều class khác nữa trong CDK) đều có chung một dạng đối số đầu vào (signature) đó là (scope, id, **kwargs). 
+Lý do là bởi tất cả các class này đều là một dạng Cấu trúc hay một dạng Construct. Construct là một khung cấu trúc cơ bản của mọi ứng dụng CDK. 
+Chúng giúp thể hiện các thành phần trừu tượng của cloud mà có thể kết hợp lại với nhau để trở thành mức trừu tượng cao hơn thông qua scopes. 
+Scopes cũng có thể bao hàm cả construct, và các construct này cũng có thể chứa các construct khác bên trong nó.</p>
+<p>Construct thường được tạo bên trong một scope của một Construct khác và chúng phải có một định danh là duy nhất bên trong scope mà nó được tạo. Do vậy bộ khởi tạo construct (hay còn gọi là constructors) sẽ luôn có các thành phần sau đây:</p>
+<ul>
+<li>scope: là đối số đầu tiên và là nơi construct được tạo ra. Trong hầu hết trường hợp bạn sẽ phải định nghĩa các construct khác bên trong scope của construct hiện tại, điều này có nghĩa ta chỉ cần truyền self cho đối số đầu tiên là đủ.</li>
+<li>id: là đối số thứ 2, định danh cho construct. ID này phải là duy nhất đối với tất cả các construct khác nằm trong cùng một scope. CDK sẽ sủ dụng định dạnh này để tạo ra CloudFormation Logical ID cho mỗi resource được định nghĩa bên trong scope. Tham khảo <a href="https://docs.aws.amazon.com/cdk/latest/guide/identifiers.html#identifiers_logical_ids">CDK user manual</a> để có thêm thông tin chi tiết về IDs trong CDK.</li>
+<li>kwargs: là đối số cuối cùng (tùy chọn), chúng thường là một tập các đối số khởi tạo và chuyên biệt với từng construct. Ví dụ, với lambda.Function construct thì đối số này là những thông tin như runtime, code and handler. Bạn có thể tìm hiểu thêm về các lựa chọn khác nhau với tính năng auto-complete của IDE hoặc tham khảo tài liệu <a href="https://docs.aws.amazon.com/cdk/api/latest/docs/aws-lambda-readme.html">online documentation</a>.</li>
+</ul>
+<h4 id="deploy-ứng-dụng">Deploy Ứng dụng</h4>
+<p>Trước khi thực hiện deploy ứng dụng, việc chúng ta nên làm và làm thường xuyên đó là kiểm tra nhanh sự khác biệt sử dụng lệnh cdk diff</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cdk diff cdkworkshop
+
+The cdkworkshop stack uses assets, which are currently <span style="color:#f92672">not</span> accounted <span style="color:#66d9ef">for</span> <span style="color:#f92672">in</span> the diff output<span style="color:#960050;background-color:#1e0010">!</span> See https:<span style="color:#f92672">//</span>github<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span>awslabs<span style="color:#f92672">/</span>aws<span style="color:#f92672">-</span>cdk<span style="color:#f92672">/</span>issues<span style="color:#f92672">/</span><span style="color:#ae81ff">395</span>
+IAM Statement Changes
+<span style="color:#960050;background-color:#1e0010">┌───┬────────────────────────┬────────┬────────────────────────┬────────────────────────┬───────────┐</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> Resource               <span style="color:#960050;background-color:#1e0010">│</span> Effect <span style="color:#960050;background-color:#1e0010">│</span> Action                 <span style="color:#960050;background-color:#1e0010">│</span> Principal              <span style="color:#960050;background-color:#1e0010">│</span> Condition <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">├───┼────────────────────────┼────────┼────────────────────────┼────────────────────────┼───────────┤</span>
+<span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">+</span> <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#960050;background-color:#1e0010">$</span>{HelloHandler<span style="color:#f92672">/</span>Service <span style="color:#960050;background-color:#1e0010">│</span> Allow  <span style="color:#960050;background-color:#1e0010">│</span> sts:AssumeRole         <span style="color:#960050;background-color:#1e0010">│</span> Service:<span style="color:#66d9ef">lambda</span><span style="color:#f92672">.</span>amazona <span style="color:#960050;background-color:#1e0010">│</span>           <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> Role<span style="color:#f92672">.</span>Arn}              <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                        <span style="color:#960050;background-color:#1e0010">│</span> ws<span style="color:#f92672">.</span>com                 <span style="color:#960050;background-color:#1e0010">│</span>           <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">└───┴────────────────────────┴────────┴────────────────────────┴────────────────────────┴───────────┘</span>
+IAM Policy Changes
+<span style="color:#960050;background-color:#1e0010">┌───┬─────────────────────────────┬─────────────────────────────────────────────────────────────────┐</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> Resource                    <span style="color:#960050;background-color:#1e0010">│</span> Managed Policy ARN                                              <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">├───┼─────────────────────────────┼─────────────────────────────────────────────────────────────────┤</span>
+<span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">+</span> <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#960050;background-color:#1e0010">$</span>{HelloHandler<span style="color:#f92672">/</span>ServiceRole} <span style="color:#960050;background-color:#1e0010">│</span> arn:<span style="color:#960050;background-color:#1e0010">$</span>{AWS::Partition}:iam::aws:policy<span style="color:#f92672">/</span>service<span style="color:#f92672">-</span>role<span style="color:#f92672">/</span>AWSLambdaBas <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                             <span style="color:#960050;background-color:#1e0010">│</span> icExecutionRole                                                 <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">└───┴─────────────────────────────┴─────────────────────────────────────────────────────────────────┘</span>
+(NOTE: There may be security<span style="color:#f92672">-</span>related changes <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> this list<span style="color:#f92672">.</span> See http:<span style="color:#f92672">//</span>bit<span style="color:#f92672">.</span>ly<span style="color:#f92672">/</span>cdk<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>EhF7Np)
+
+Parameters
+[<span style="color:#f92672">+</span>] Parameter HelloHandler<span style="color:#f92672">/</span>Code<span style="color:#f92672">/</span>S3Bucket HelloHandlerCodeS3Bucket4359A483: {<span style="color:#e6db74">&#34;Type&#34;</span>:<span style="color:#e6db74">&#34;String&#34;</span>,<span style="color:#e6db74">&#34;Description&#34;</span>:<span style="color:#e6db74">&#34;S3 bucket for asset </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">hello-cdk-1/HelloHandler/Code</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#34;</span>}
+[<span style="color:#f92672">+</span>] Parameter HelloHandler<span style="color:#f92672">/</span>Code<span style="color:#f92672">/</span>S3VersionKey HelloHandlerCodeS3VersionKey07D12610: {<span style="color:#e6db74">&#34;Type&#34;</span>:<span style="color:#e6db74">&#34;String&#34;</span>,<span style="color:#e6db74">&#34;Description&#34;</span>:<span style="color:#e6db74">&#34;S3 key for asset version </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">hello-cdk-1/HelloHandler/Code</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#34;</span>}
+[<span style="color:#f92672">+</span>] Parameter HelloHandler<span style="color:#f92672">/</span>Code<span style="color:#f92672">/</span>ArtifactHash HelloHandlerCodeArtifactHash5DF4E4B6: {<span style="color:#e6db74">&#34;Type&#34;</span>:<span style="color:#e6db74">&#34;String&#34;</span>,<span style="color:#e6db74">&#34;Description&#34;</span>:<span style="color:#e6db74">&#34;Artifact hash for asset </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">hello-cdk-1/HelloHandler/Code</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#34;</span>}
+
+Resources
+[<span style="color:#f92672">+</span>] AWS::IAM::Role HelloHandler<span style="color:#f92672">/</span>ServiceRole HelloHandlerServiceRole11EF7C63 
+[<span style="color:#f92672">+</span>] AWS::Lambda::Function HelloHandler HelloHandler2E4FBA4D 
+</code></pre></div><p>Kết quả kiểm tra cho ta thấy, tài nguyên AWS::Lambda::Function sẽ được tạo ra cùng với một loạt CloudFormation parameter được CDK Toolkit sử dụng để truyền tới handler code. 
+Sau khi việc kiểm tra hoàn tất, thực hiện deploy ứng dụng cdk deploy. Lệnh không chỉ thực hiện việc triển khai ứng dụng lên AWS Account mà còn thực hiện upload và lưu trữ thư mục lambda từ local lên bootstrap bucket.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cdk deploy cdkworkshop
+
+</code></pre></div><h4 id="kiểm-thử-function-của-ứng-dụng">Kiểm thử function của ứng dụng</h4>
+<p>Truy cập <a href="https://console.aws.amazon.com/lambda/home#/functions">AWS Lambda Console</a> để bắt đầu kiểm thử function của ứng dụng.
+<img src="../../../images/1/9.png?width=90pc" alt="Security Hub"></p>
+<p>Chọn tên của function rồi bấm Test để mở cửa sổ Configure test event:
+<img src="../../../images/1/10.png?width=90pc" alt="Security Hub"></p>
+<p>Nội dung Event template list chọn Amazon API Gateway AWS Proxy, rồi nhập tên cho bài kiểm thử bên dưới Event name.
+<img src="../../../images/1/11.png?width=90pc" alt="Security Hub"></p>
+<p>Tiếp theo bấm Create, rồi click Test một lần nữa. Chờ cho tới khi quá trình kiểm thử hoàn thành.
+Mở rộng phần Details trong bảng Execution result để xem chi tiết và bạn có thể sẽ nhìn một kết quả như mong đợi tương tự bên dưới:
+<img src="../../../images/1/12.png?width=90pc" alt="Security Hub"></p>
+<h3 id="api-gateway">API Gateway</h3>
+<p>Bước tiếp theo, chúng ta sẽ đi bổ sung API Gateway và đặt nó phía trước Lambda function của chúng ta. API Gateway sẽ phơi ra bên ngoài địa chỉ đầu cuối HTTP công khai để bất cứ ai trên internet đểu cho thể truy cập HTTP client thông qua lệnh curl hoặc qua một web browser.
+Lambda proxy được tích hợp với API để mọi request đi tới URL đều được chuyển hướng tới Lambda function, và phản hồi từ Lambda function cũng sẽ tới được với User.</p>
+<p>Để cài đặt thư viện cấu trúc API Gateway, ta dùng lệnh pip như sau:</p>
+<p>pip install aws-cdk.aws_apigateway</p>
+<p>Tiếp theo, bổ sung vào file cdkworkshop_stack.py, thêm định nghĩa API endpoint và liên kết nó với Lambda function:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> aws_cdk <span style="color:#f92672">import</span> (
+    aws_lambda <span style="color:#66d9ef">as</span> _lambda,
+    aws_apigateway <span style="color:#66d9ef">as</span> apigw,
+    core,
+)
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CdkworkshopStack</span>(core<span style="color:#f92672">.</span>Stack):
+
+    <span style="color:#66d9ef">def</span> __init__(self, scope: core<span style="color:#f92672">.</span>Construct, id: str, <span style="color:#f92672">**</span>kwargs) <span style="color:#f92672">-&gt;</span> None:
+        super()<span style="color:#f92672">.</span>__init__(scope, id, <span style="color:#f92672">**</span>kwargs)
+
+        my_lambda <span style="color:#f92672">=</span> _lambda<span style="color:#f92672">.</span>Function(
+            self, <span style="color:#e6db74">&#39;HelloHandler&#39;</span>,
+            runtime<span style="color:#f92672">=</span>_lambda<span style="color:#f92672">.</span>Runtime<span style="color:#f92672">.</span>PYTHON_3_7,
+            code<span style="color:#f92672">=</span>_lambda<span style="color:#f92672">.</span>Code<span style="color:#f92672">.</span>asset(<span style="color:#e6db74">&#39;lambda&#39;</span>),
+            handler<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;hello.handler&#39;</span>,
+        )
+
+        apigw<span style="color:#f92672">.</span>LambdaRestApi(
+            self, <span style="color:#e6db74">&#39;Endpoint&#39;</span>,
+            handler<span style="color:#f92672">=</span>my_lambda,
+        )
+</code></pre></div><p>Thực hiện chạy lệnh kiểm tra sự khác biệt, có thể thấy các resource sẽ được bổ sung sau khi deploy ứng dụng</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cdk diff
+
+The cdkworkshop stack uses assets, which are currently <span style="color:#f92672">not</span> accounted <span style="color:#66d9ef">for</span> <span style="color:#f92672">in</span> the diff output<span style="color:#960050;background-color:#1e0010">!</span> See https:<span style="color:#f92672">//</span>github<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span>awslabs<span style="color:#f92672">/</span>aws<span style="color:#f92672">-</span>cdk<span style="color:#f92672">/</span>issues<span style="color:#f92672">/</span><span style="color:#ae81ff">395</span>
+IAM Statement Changes
+<span style="color:#960050;background-color:#1e0010">┌───┬────────────────────┬────────┬────────────────────┬────────────────────┬───────────────────────┐</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> Resource           <span style="color:#960050;background-color:#1e0010">│</span> Effect <span style="color:#960050;background-color:#1e0010">│</span> Action             <span style="color:#960050;background-color:#1e0010">│</span> Principal          <span style="color:#960050;background-color:#1e0010">│</span> Condition             <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">├───┼────────────────────┼────────┼────────────────────┼────────────────────┼───────────────────────┤</span>
+<span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">+</span> <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#960050;background-color:#1e0010">$</span>{Endpoint<span style="color:#f92672">/</span>CloudWa <span style="color:#960050;background-color:#1e0010">│</span> Allow  <span style="color:#960050;background-color:#1e0010">│</span> sts:AssumeRole     <span style="color:#960050;background-color:#1e0010">│</span> Service:apigateway <span style="color:#960050;background-color:#1e0010">│</span>                       <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> tchRole<span style="color:#f92672">.</span>Arn}       <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">.</span><span style="color:#960050;background-color:#1e0010">$</span>{AWS::URLSuffix} <span style="color:#960050;background-color:#1e0010">│</span>                       <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">├───┼────────────────────┼────────┼────────────────────┼────────────────────┼───────────────────────┤</span>
+<span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">+</span> <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#960050;background-color:#1e0010">$</span>{HelloHandler<span style="color:#f92672">.</span>Arn <span style="color:#960050;background-color:#1e0010">│</span> Allow  <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#66d9ef">lambda</span>:InvokeFunct <span style="color:#960050;background-color:#1e0010">│</span> Service:apigateway <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#e6db74">&#34;ArnLike&#34;</span>: {          <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> }                  <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span> ion                <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">.</span>amazonaws<span style="color:#f92672">.</span>com     <span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#34;AWS:SourceArn&#34;</span>: <span style="color:#e6db74">&#34;a │</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> rn:<span style="color:#960050;background-color:#1e0010">$</span>{AWS::Partition}: <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> execute<span style="color:#f92672">-</span>api:us<span style="color:#f92672">-</span>east<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span> <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> :<span style="color:#960050;background-color:#1e0010">$</span>{AWS::AccountId}:<span style="color:#960050;background-color:#1e0010">$</span>{ <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> Endpoint}<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">$</span>{EndpointD <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> eploymentStageprodB78 <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> BEEA0}<span style="color:#f92672">/*/</span><span style="color:#e6db74">&#34;            │</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> }                     <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">+</span> <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#960050;background-color:#1e0010">$</span>{HelloHandler<span style="color:#f92672">.</span>Arn <span style="color:#960050;background-color:#1e0010">│</span> Allow  <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#66d9ef">lambda</span>:InvokeFunct <span style="color:#960050;background-color:#1e0010">│</span> Service:apigateway <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#e6db74">&#34;ArnLike&#34;</span>: {          <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> }                  <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span> ion                <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">.</span>amazonaws<span style="color:#f92672">.</span>com     <span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#34;AWS:SourceArn&#34;</span>: <span style="color:#e6db74">&#34;a │</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> rn:<span style="color:#960050;background-color:#1e0010">$</span>{AWS::Partition}: <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> execute<span style="color:#f92672">-</span>api:us<span style="color:#f92672">-</span>east<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span> <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> :<span style="color:#960050;background-color:#1e0010">$</span>{AWS::AccountId}:<span style="color:#960050;background-color:#1e0010">$</span>{ <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> Endpoint}<span style="color:#f92672">/</span>test<span style="color:#f92672">-</span>invoke <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">-</span>stage<span style="color:#f92672">/*/</span><span style="color:#e6db74">&#34;            │</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> }                     <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">+</span> <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#960050;background-color:#1e0010">$</span>{HelloHandler<span style="color:#f92672">.</span>Arn <span style="color:#960050;background-color:#1e0010">│</span> Allow  <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#66d9ef">lambda</span>:InvokeFunct <span style="color:#960050;background-color:#1e0010">│</span> Service:apigateway <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#e6db74">&#34;ArnLike&#34;</span>: {          <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> }                  <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span> ion                <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">.</span>amazonaws<span style="color:#f92672">.</span>com     <span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#34;AWS:SourceArn&#34;</span>: <span style="color:#e6db74">&#34;a │</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> rn:<span style="color:#960050;background-color:#1e0010">$</span>{AWS::Partition}: <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> execute<span style="color:#f92672">-</span>api:us<span style="color:#f92672">-</span>east<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span> <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> :<span style="color:#960050;background-color:#1e0010">$</span>{AWS::AccountId}:<span style="color:#960050;background-color:#1e0010">$</span>{ <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> Endpoint}<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">$</span>{EndpointD <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> eploymentStageprodB78 <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> BEEA0}<span style="color:#f92672">/*/</span>{proxy<span style="color:#f92672">+</span>}<span style="color:#e6db74">&#34;    │</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> }                     <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">+</span> <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#960050;background-color:#1e0010">$</span>{HelloHandler<span style="color:#f92672">.</span>Arn <span style="color:#960050;background-color:#1e0010">│</span> Allow  <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#66d9ef">lambda</span>:InvokeFunct <span style="color:#960050;background-color:#1e0010">│</span> Service:apigateway <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#e6db74">&#34;ArnLike&#34;</span>: {          <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> }                  <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span> ion                <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">.</span>amazonaws<span style="color:#f92672">.</span>com     <span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#34;AWS:SourceArn&#34;</span>: <span style="color:#e6db74">&#34;a │</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> rn:<span style="color:#960050;background-color:#1e0010">$</span>{AWS::Partition}: <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> execute<span style="color:#f92672">-</span>api:us<span style="color:#f92672">-</span>east<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span> <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> :<span style="color:#960050;background-color:#1e0010">$</span>{AWS::AccountId}:<span style="color:#960050;background-color:#1e0010">$</span>{ <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> Endpoint}<span style="color:#f92672">/</span>test<span style="color:#f92672">-</span>invoke <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">-</span>stage<span style="color:#f92672">/*/</span>{proxy<span style="color:#f92672">+</span>}<span style="color:#e6db74">&#34;    │</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>        <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span>                    <span style="color:#960050;background-color:#1e0010">│</span> }                     <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">└───┴────────────────────┴────────┴────────────────────┴────────────────────┴───────────────────────┘</span>
+IAM Policy Changes
+<span style="color:#960050;background-color:#1e0010">┌───┬────────────────────────────┬──────────────────────────────────────────────────────────────────┐</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span> Resource                   <span style="color:#960050;background-color:#1e0010">│</span> Managed Policy ARN                                               <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">├───┼────────────────────────────┼──────────────────────────────────────────────────────────────────┤</span>
+<span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#f92672">+</span> <span style="color:#960050;background-color:#1e0010">│</span> <span style="color:#960050;background-color:#1e0010">$</span>{Endpoint<span style="color:#f92672">/</span>CloudWatchRole} <span style="color:#960050;background-color:#1e0010">│</span> arn:<span style="color:#960050;background-color:#1e0010">$</span>{AWS::Partition}:iam::aws:policy<span style="color:#f92672">/</span>service<span style="color:#f92672">-</span>role<span style="color:#f92672">/</span>AmazonAPIGate <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">│</span>                            <span style="color:#960050;background-color:#1e0010">│</span> wayPushToCloudWatchLogs                                          <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">└───┴────────────────────────────┴──────────────────────────────────────────────────────────────────┘</span>
+(NOTE: There may be security<span style="color:#f92672">-</span>related changes <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> this list<span style="color:#f92672">.</span> See http:<span style="color:#f92672">//</span>bit<span style="color:#f92672">.</span>ly<span style="color:#f92672">/</span>cdk<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>EhF7Np)
+
+Resources
+[<span style="color:#f92672">+</span>] AWS::Lambda::Permission HelloHandler<span style="color:#f92672">/</span>ApiPermission<span style="color:#f92672">.</span>ANY<span style="color:#f92672">..</span> HelloHandlerApiPermissionANYAC4E141E 
+[<span style="color:#f92672">+</span>] AWS::Lambda::Permission HelloHandler<span style="color:#f92672">/</span>ApiPermission<span style="color:#f92672">.</span>Test<span style="color:#f92672">.</span>ANY<span style="color:#f92672">..</span> HelloHandlerApiPermissionTestANYDDD56D72 
+[<span style="color:#f92672">+</span>] AWS::Lambda::Permission HelloHandler<span style="color:#f92672">/</span>ApiPermission<span style="color:#f92672">.</span>ANY<span style="color:#f92672">..</span>{proxy<span style="color:#f92672">+</span>} HelloHandlerApiPermissionANYproxy90E90CD6 
+[<span style="color:#f92672">+</span>] AWS::Lambda::Permission HelloHandler<span style="color:#f92672">/</span>ApiPermission<span style="color:#f92672">.</span>Test<span style="color:#f92672">.</span>ANY<span style="color:#f92672">..</span>{proxy<span style="color:#f92672">+</span>} HelloHandlerApiPermissionTestANYproxy9803526C 
+[<span style="color:#f92672">+</span>] AWS::ApiGateway::RestApi Endpoint EndpointEEF1FD8F 
+[<span style="color:#f92672">+</span>] AWS::ApiGateway::Deployment Endpoint<span style="color:#f92672">/</span>Deployment EndpointDeployment318525DAb462c597ccb914d9fc1c10f664ed81ca 
+[<span style="color:#f92672">+</span>] AWS::ApiGateway::Stage Endpoint<span style="color:#f92672">/</span>DeploymentStage<span style="color:#f92672">.</span>prod EndpointDeploymentStageprodB78BEEA0 
+[<span style="color:#f92672">+</span>] AWS::IAM::Role Endpoint<span style="color:#f92672">/</span>CloudWatchRole EndpointCloudWatchRoleC3C64E0F 
+[<span style="color:#f92672">+</span>] AWS::ApiGateway::Account Endpoint<span style="color:#f92672">/</span>Account EndpointAccountB8304247 
+[<span style="color:#f92672">+</span>] AWS::ApiGateway::Resource Endpoint<span style="color:#f92672">/</span>Default<span style="color:#f92672">/</span>{proxy<span style="color:#f92672">+</span>} Endpointproxy39E2174E 
+[<span style="color:#f92672">+</span>] AWS::ApiGateway::Method Endpoint<span style="color:#f92672">/</span>Default<span style="color:#f92672">/</span>{proxy<span style="color:#f92672">+</span>}<span style="color:#f92672">/</span>ANY EndpointproxyANYC09721C5 
+[<span style="color:#f92672">+</span>] AWS::ApiGateway::Method Endpoint<span style="color:#f92672">/</span>Default<span style="color:#f92672">/</span>ANY EndpointANY485C938B 
+
+Outputs
+[<span style="color:#f92672">+</span>] Output Endpoint<span style="color:#f92672">/</span>Endpoint Endpoint8024A810: {<span style="color:#e6db74">&#34;Value&#34;</span>:{<span style="color:#e6db74">&#34;Fn::Join&#34;</span>:[<span style="color:#e6db74">&#34;&#34;</span>,[<span style="color:#e6db74">&#34;https://&#34;</span>,{<span style="color:#e6db74">&#34;Ref&#34;</span>:<span style="color:#e6db74">&#34;EndpointEEF1FD8F&#34;</span>},<span style="color:#e6db74">&#34;.execute-api.us-east-2.&#34;</span>,{<span style="color:#e6db74">&#34;Ref&#34;</span>:<span style="color:#e6db74">&#34;AWS::URLSuffix&#34;</span>},<span style="color:#e6db74">&#34;/&#34;</span>,{<span style="color:#e6db74">&#34;Ref&#34;</span>:<span style="color:#e6db74">&#34;EndpointDeploymentStageprodB78BEEA0&#34;</span>},<span style="color:#e6db74">&#34;/&#34;</span>]]}}
+</code></pre></div><p>Sau khi hoàn tất việc kiểm tra, thực hiện deploy ứng dụng</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cdk deploy
+</code></pre></div><p>Kết quả thu được đường dẫn là API Gateway endpoint URL tương tự như bên dưới</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">CdkWorkshopStack<span style="color:#f92672">.</span>Endpoint8024A810 <span style="color:#f92672">=</span> https:<span style="color:#f92672">//</span>xxxxxxxxxx<span style="color:#f92672">.</span>execute<span style="color:#f92672">-</span>api<span style="color:#f92672">.</span>us<span style="color:#f92672">-</span>east<span style="color:#f92672">-</span><span style="color:#ae81ff">1.</span>amazonaws<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span>prod<span style="color:#f92672">/</span>
+</code></pre></div><p>Thực hiện kiểm tra kết quả đầu ra với lệnh curl</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">curl https:<span style="color:#f92672">//</span>xxxxxxxxxx<span style="color:#f92672">.</span>execute<span style="color:#f92672">-</span>api<span style="color:#f92672">.</span>us<span style="color:#f92672">-</span>east<span style="color:#f92672">-</span><span style="color:#ae81ff">1.</span>amazonaws<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span>prod<span style="color:#f92672">/</span>
+</code></pre></div><p>Bạn sẽ nhận được output</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Hello, CDK<span style="color:#960050;background-color:#1e0010">!</span> You<span style="color:#e6db74">&#39;ve hit /</span>
+</code></pre></div><p>Hoặc kiểm tra sử dụng web browser
+<img src="../../../images/1/13.png?width=90pc" alt="Security Hub"></p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/2-new-project/" title="Khởi tạo một CDK project"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/4-writing-constructs/" title="Cách Xây dựng một Construct" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1614014319"></script>
+    <script src="/js/perfect-scrollbar.min.js?1614014319"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1614014319"></script>
+    <script src="/js/jquery.sticky.js?1614014319"></script>
+    <script src="/js/featherlight.min.js?1614014319"></script>
+    <script src="/js/highlight.pack.js?1614014319"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1614014319"></script>
+    <script src="/js/learn.js?1614014319"></script>
+    <script src="/js/hugo-learn.js?1614014319"></script>
+
+    <link href="/mermaid/mermaid.css?1614014319" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1614014319"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

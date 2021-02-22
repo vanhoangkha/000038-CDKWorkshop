@@ -1,0 +1,110 @@
+1. cdk init --> khởi tạo & download sample app, đồng thời khởi tạo môi trường ảo, khép kín và độc lập với môi trường python bên ngoài	
+2. activate.bat --> kích hoạt môi trường ảo hóa 
+3. app.py --> Nạp và khởi tạo Instance thuộc lớp CdkWorkshopStack được khai báo trong file cdk_workhop_stack.py
+4. cdk_workshop_stack.py --> khởi tạo stack với 2 thực thể con là sqs.Queue và sns.Topic
+5. cdk synth --> generate ra một CloudFormation template từ các file cdk_workhop_stack.py
+6. cdk ls --> hiển thị danh sách các stack đã có sẵn
+7. cdk bootstrap --> Cài đặt resource cần thiết cho cdk toolkit. Bản thân bootstrap cũng là một stack. 
+8. cdk deploy cdkworkshop  --> triển khai stack cdkworkshop --> khởi tạo CloudFormation stack 
+9. cdk diff --> phát hiện và hiển thị những thay đổi trong file cdk_workhop_stack.py
+10. cdk deploy --> áp dụng những thay đổi trên file cdk_workhop_stack.py vào CloudFormation stack 
+11. pip install aws-cdk.aws-lambda  --> cài đặt thư viện lambda --> xây dựng ứng dụng với lambda + cdk 
+12.  & c:/cdkworkshop/.venv/Scripts/Activate.ps1  --> access vao moi truong virtual environment
+---
+Quy trình chạy: 
+App.py là chương trình chạy, được User gọi tới --> cdk_workhop_stack nằm bên trong App.py --> kết quả thu được là CloudFormation template
+Ở ví dụ đầu tiên, chạy Deploy --> sử dụng AWS Account Access Key và Secret Key để tạo  ra các Resource như trong CloudFormation trên AWS Console đã mô tả
+ 
+
+
+Simple Notification Service (cổng thông tin Topic, tự động đẩy package tới những Subcriber) & Simple Queue Service (hàng đợi, receiver phải tự kéo package về)
+
+---
+Phân tích nội dung template
+CdkworkshopQueue18864164:		--> Khởi tạo thời gian sống của 1 gói tin trong queue là 300s
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 300
+    Metadata:
+      aws:cdk:path: cdkworkshop/CdkworkshopQueue/Resource
+
+CdkworkshopQueuePolicy78D5BF45:		--> Policy cho phép CdkworkshopTopic58CFDD3D được quyền SendMessage tới CdkworkshopQueue18864164
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: sqs:SendMessage
+            Condition:
+              ArnEquals:
+                aws:SourceArn:
+                  Ref: CdkworkshopTopic58CFDD3D
+            Effect: Allow
+            Principal:
+              Service: sns.amazonaws.com
+            Resource:
+              Fn::GetAtt:
+                - CdkworkshopQueue18864164
+                - Arn
+        Version: "2012-10-17"
+        - Ref: CdkworkshopQueue18864164
+      aws:cdk:path: cdkworkshop/CdkworkshopQueue/Policy/Resource
+	  
+CdkworkshopQueuecdkworkshopCdkworkshopTopic7642CC2FCF70B637:	--> Khởi tạo Subscription giữa CdkworkshopTopic58CFDD3D và CdkworkshopQueue18864164
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: sqs
+      TopicArn:
+        Ref: CdkworkshopTopic58CFDD3D
+      Endpoint:
+        Fn::GetAtt:
+          - CdkworkshopQueue18864164
+          - Arn
+    Metadata:
+      aws:cdk:path: cdkworkshop/CdkworkshopQueue/cdkworkshopCdkworkshopTopic7642CC2F/Resource''
+	  
+CdkworkshopTopic58CFDD3D:	--> Khởi tạo Topic
+  Type: AWS::SNS::Topic
+  Metadata:
+    aws:cdk:path: cdkworkshop/CdkworkshopTopic/Resource
+CDKMetadata:
+  Type: AWS::CDK::Metadata
+  Properties:
+    Modules: aws-cdk=1.18.0,jsii-runtime=Python/3.7.3
+	
+---
+Phân tích code app.py
+
+#!/usr/bin/env python3 
+
+from aws_cdk import core  --> aws_cdk là bộ thư viện được cài đặt nhờ lệnh "npm -g install aws-cdk". Bộ thư viện sau cài đặt được lưu trong đường dẫn Lib của thư mục chứa application. 
+					--> bên trong bộ thư viện aws_cdk chứa rất nhiều thư viện con, trong đó bao gồm cả thư viện Core.
+					--> để tránh làm cho ứng dụng trở nên cồng kềnh, ta chỉ thực hiện import một phần của bộ thư viện aws_cdk vào ứng dụng. Cụ thể ở đây, ta chỉ import duy nhất thư viện Core từ bộ thư viện aws_cdk vào ứng dụng
+
+from cdkworkshop.cdkworkshop_stack import CdkWorkshopStack  --> Để import 1 class, thực hiện chỉ rõ đường dẫn tới file chứa class bằng từ khóa "from", và nêu bật class muốn import bằng từ khóa "import". 
+												--> Cụ thể, lệnh trên thực hiện import class có tên CdkWorkshopStack nằm trong file cdkworkshop_stack.py có location ở đường dẫn C:\cdkworkshop\cdkworkshop_stack.py
+
+
+app = core.App()  --> lệnh gọi tới lớp App() nằm trong thư viện Core --> lệnh trả về giá trị của đối tượng app là cấu trúc Construct của App --> gần như khai báo đối tượng dạng Stack
+CdkWorkshopStack(app, "cdkworkshop", env={'region': 'us-west-2'})
+
+app.synth()
+
+-----
+Phan tich Cdkworkshopstack.py sau khi bo sung code lambda
+
+class CdkworkshopStack(core.Stack):
+
+    def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+        
+        #define lambda variable
+        my_lambda = _lambda.Function(
+            self,'HelloHandler11',						--> khong quan trong nhung phai co --> ten cua function
+            runtime=_lambda.Runtime.PYTHON_3_7,			--> chi ra version Python
+            code=_lambda.Code.asset('lambda'),			--> chi ra ten cua directory chua code lambda la thu muc "lambda"
+            handler='hello.handler'						--> chi ra ten file chua ham bat su kien lambda: file hello.py; trong file co chua ham bat su kien la ham "handler"
+        )
+        apigw.LambdaRestApi(							--> day la ham lien ket voi Lambda function --> chuyen huong moi request toi function "my_lambda"
+            self, 'Endpoint',							--> ten api
+            handler=my_lambda,							--> tro toi function "my_lambda"
+        )
